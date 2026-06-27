@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGS 3D | Premium Printing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primaria: #333333; /* Cinza Escuro Premium */
+            --secundaria: #ffdf00; /* Amarelo Hype */
+            --dark: #111111;
+            --bg: #ffffff;
+            --text-muted: #666;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg); color: var(--dark); padding-bottom: 100px; scroll-behavior: smooth; }
+
+        /* Banner Topo */
+        .ticker { background: var(--secundaria); padding: 10px; font-size: 10px; font-weight: 900; text-align: center; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* Header */
+        header { background: var(--primaria); padding: 20px; text-align: center; position: sticky; top: 0; z-index: 100; cursor: pointer; }
+        .logo { color: white; font-weight: 900; font-size: 26px; font-style: italic; letter-spacing: -1px; }
+
+        /* Campo de Busca */
+        .search-box { padding: 15px 20px; display: none; background: #f9f9f9; border-bottom: 1px solid #eee; }
+        .search-box input { width: 100%; padding: 14px; border: 2px solid var(--primaria); border-radius: 4px; font-weight: 700; outline: none; font-size: 16px; }
+
+        /* Hero */
+        .hero { padding: 40px 20px; text-align: center; }
+        .hero h1 { font-size: 42px; font-weight: 900; line-height: 0.9; margin-bottom: 10px; letter-spacing: -2px; }
+
+        /* Grid de Produtos */
+        .container { max-width: 500px; margin: 0 auto; padding: 15px; }
+        .product-card { margin-bottom: 60px; }
+        .product-img { width: 100%; border-radius: 4px; display: block; background: #eee; }
+        
+        .badge { background: var(--dark); color: white; padding: 5px 12px; font-size: 10px; font-weight: 900; display: inline-block; margin-top: 10px; }
+        .price-new { font-size: 26px; font-weight: 900; display: block; margin: 15px 0; }
+        
+        .btn-buy { display: block; width: 100%; background: var(--primaria); color: white; text-align: center; padding: 20px; text-decoration: none; font-weight: 900; border-radius: 4px; text-transform: uppercase; transition: opacity 0.2s; }
+        .btn-buy:active { opacity: 0.8; }
+        
+        /* Tabela Estilo Streetwear */
+        .specs-table { width: 100%; background: var(--primaria); color: var(--secundaria); font-size: 11px; margin-top: 20px; border-collapse: collapse; border-radius: 4px; overflow: hidden; }
+        .specs-table td { padding: 12px; border: 1px solid rgba(255,255,255,0.05); }
+
+        /* BARRA INFERIOR */
+        .nav-bottom { position: fixed; bottom: 0; width: 100%; background: var(--primaria); display: grid; grid-template-columns: 1fr 1fr 1fr; padding: 12px 0; z-index: 1000; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); }
+        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; text-decoration: none; cursor: pointer; }
+        .nav-item svg { width: 22px; height: 22px; margin-bottom: 5px; fill: white; }
+        .nav-item span { font-size: 9px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* MODAL */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 20px; }
+        .modal-content { background: white; width: 100%; max-width: 400px; border-radius: 8px; padding: 30px; }
+        .modal-content h2 { font-weight: 900; margin-bottom: 25px; text-align: center; text-transform: uppercase; letter-spacing: -1px; }
+        .cat-btn { display: block; width: 100%; padding: 16px; margin-bottom: 12px; background: var(--primaria); color: white; font-weight: 900; border: none; border-radius: 4px; text-transform: uppercase; cursor: pointer; }
+        .close-modal { text-align: center; margin-top: 25px; color: var(--text-muted); font-size: 11px; font-weight: 900; cursor: pointer; text-transform: uppercase; }
+
+        .active-filter-tag { background: var(--secundaria); padding: 12px; text-align: center; font-weight: 900; font-size: 12px; display: none; border-bottom: 1px solid rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+
+    <div class="ticker">VGS 3D • QUALIDADE DE ROTINA • 2024 DROP</div>
+
+    <header onclick="resetHome()">
+        <div class="logo">VGS 3D</div>
+    </header>
+
+    <div class="search-box" id="searchBox">
+        <input type="text" id="searchInput" placeholder="O QUE VOCÊ BUSCA?" oninput="filtrarBusca()">
+    </div>
+
+    <div class="active-filter-tag" id="filterTag"></div>
+
+    <main id="mainContent">
+        <section class="hero" id="heroBanner">
+            <h1>VOCÊ CHEGOU ANTES DO HYPE.</h1>
+            <p style="font-size: 14px; color: var(--text-muted); margin-top: 10px; max-width: 280px; margin-inline: auto;">Produção limitada. Garanta sua peça antes do encerramento do lote.</p>
+        </section>
+
+        <div class="container" id="productGrid"></div>
+    </main>
+
+    <!-- Popup Categorias -->
+    <div class="modal" id="modalCat">
+        <div class="modal-content">
+            <h2>Categorias</h2>
+            <div id="catList"></div>
+            <div class="close-modal" onclick="toggleModal()">FECHAR</div>
+        </div>
+    </div>
+
+    <!-- Barra Inferior -->
+    <nav class="nav-bottom">
+        <div class="nav-item" onclick="resetHome()">
+            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            <span>Início</span>
+        </div>
+        <div class="nav-item" onclick="toggleModal()">
+            <svg viewBox="0 0 24 24"><path d="M4 11h5V5H4v6zm0 7h5v-6H4v6zm7 0h5v-6h-5v6zm0-13v6h5V5h-5z"/></svg>
+            <span>Categorias</span>
+        </div>
+        <div class="nav-item" onclick="toggleSearch()">
+            <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            <span>Buscar</span>
+        </div>
+    </nav>
+
+    <script src="dados.js"></script>
+    <script>
+        function render(lista, tituloFiltro = "") {
+            const grid = document.getElementById('productGrid');
+            const tag = document.getElementById('filterTag');
+            const hero = document.getElementById('heroBanner');
+            
+            grid.innerHTML = "";
+            
+            if(tituloFiltro) {
+                tag.innerHTML = `FILTRO: ${tituloFiltro.toUpperCase()}`;
+                tag.style.display = 'block';
+                hero.style.display = 'none';
+            } else {
+                tag.style.display = 'none';
+                hero.style.display = 'block';
+            }
+
+            lista.forEach(p => {
+                grid.innerHTML += `
+                    <div class="product-card">
+                        <img src="${p.foto}" class="product-img">
+                        ${p.esgotado ? '<span class="badge">ESGOTADO</span>' : ''}
+                        <div style="margin-top:20px">
+                            <h2 style="font-weight:900; text-transform:uppercase; letter-spacing:-0.5px">${p.nome}</h2>
+                            <p style="color:var(--text-muted); font-size:12px; font-weight:700; text-transform:uppercase">${p.subtitulo}</p>
+                            <span class="price-new">R$ ${p.precoDesconto}</span>
+                            <a href="${p.linkCompra}" class="btn-buy">Adquirir Item</a>
+                            <p style="font-size:14px; color:#444; line-height:1.6; margin-top:20px">${p.descricao}</p>
+                            <table class="specs-table">
+                                ${p.tabela.linhas.map(l => `<tr><td style="font-weight:900; text-transform:uppercase; opacity:0.8">${l[0]}</td><td style="text-align:right">${l[1]}</td></tr>`).join('')}
+                            </table>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Função para voltar ao início total
+        function resetHome() {
+            document.getElementById('searchBox').style.display = 'none';
+            document.getElementById('searchInput').value = '';
+            render(PRODUTOS);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Função da Lupa (Liga/Desliga)
+        function toggleSearch() {
+            const box = document.getElementById('searchBox');
+            const input = document.getElementById('searchInput');
+            
+            if (box.style.display === 'block') {
+                box.style.display = 'none';
+                input.value = ''; // Limpa a busca ao fechar
+                render(PRODUTOS); // Volta a mostrar tudo
+            } else {
+                box.style.display = 'block';
+                input.focus();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function filtrarBusca() {
+            const t = document.getElementById('searchInput').value.toLowerCase();
+            const res = PRODUTOS.filter(p => p.nome.toLowerCase().includes(t) || p.tags.some(tag => tag.includes(t)));
+            render(res, t ? `Resultados para "${t}"` : "");
+        }
+
+        function toggleModal() {
+            const m = document.getElementById('modalCat');
+            m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
+            
+            const categorias = [...new Set(PRODUTOS.map(p => p.categoria))];
+            const listDiv = document.getElementById('catList');
+            listDiv.innerHTML = "";
+            categorias.forEach(c => {
+                listDiv.innerHTML += `<button class="cat-btn" onclick="filtrarCat('${c}')">${c}</button>`;
+            });
+        }
+
+        function filtrarCat(cat) {
+            const res = PRODUTOS.filter(p => p.categoria === cat);
+            render(res, cat);
+            toggleModal();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.onload = () => render(PRODUTOS);
+    </script>
+</body>
+</html>
