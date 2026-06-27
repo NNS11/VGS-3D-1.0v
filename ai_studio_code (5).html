@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGS 3D | Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primaria: #333333; /* Cinza Escuro */
+            --secundaria: #ffdf00; /* Amarelo Hype */
+            --dark: #111111;
+            --bg: #f4f4f4;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg); color: var(--dark); overflow-x: hidden; scroll-behavior: smooth; }
+
+        /* HEADER E BARRA DE BUSCA */
+        header { background: var(--primaria); padding: 15px; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .logo { color: white; font-weight: 900; font-size: 22px; font-style: italic; letter-spacing: -1px; }
+        
+        .search-box { padding: 10px 15px; display: none; background: white; border-bottom: 1px solid #ddd; }
+        .search-box input { width: 100%; padding: 12px; border: 2px solid var(--primaria); border-radius: 8px; outline: none; font-weight: 700; }
+
+        /* VITRINE ESTILO SHOPEE (2 POR LINHA) */
+        .grid-container { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 10px; 
+            padding: 10px; 
+            max-width: 800px; 
+            margin: 0 auto; 
+        }
+        .product-thumb { 
+            background: white; 
+            border-radius: 8px; 
+            overflow: hidden; 
+            cursor: pointer; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+        .product-thumb img { width: 100%; aspect-ratio: 1/1; object-fit: cover; }
+        .product-thumb .info { padding: 10px; flex-grow: 1; }
+        .product-thumb h3 { font-size: 13px; font-weight: 700; line-height: 1.2; height: 32px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; margin-bottom: 5px; }
+        .product-thumb .price { color: var(--dark); font-weight: 900; font-size: 15px; }
+
+        /* PÁGINA DE DETALHES (ESCONDIDA POR PADRÃO) */
+        #detailPage { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: white; z-index: 500; display: none; overflow-y: auto; padding-bottom: 150px;
+        }
+        .back-btn { position: absolute; top: 20px; left: 20px; background: rgba(0,0,0,0.5); color: white; border: none; padding: 10px 15px; border-radius: 50px; font-weight: 900; cursor: pointer; z-index: 600; }
+        
+        .detail-img { width: 100%; background: #eee; }
+        .detail-content { padding: 20px; max-width: 600px; margin: 0 auto; }
+        .detail-title { font-size: 24px; font-weight: 900; text-transform: uppercase; margin-bottom: 5px; }
+        .detail-price-box { margin: 20px 0; }
+        .detail-price-old { text-decoration: line-through; color: #999; font-size: 14px; }
+        .detail-price-new { font-size: 32px; font-weight: 900; color: var(--dark); display: block; }
+        
+        .specs-table { width: 100%; margin-top: 20px; border-collapse: collapse; background: var(--primaria); color: var(--secundaria); font-size: 12px; }
+        .specs-table td { padding: 12px; border: 1px solid rgba(255,255,255,0.1); }
+
+        /* BOTÃO DE COMPRA FIXO CHAMATIVO */
+        .buy-bar-fixed { 
+            position: fixed; bottom: 80px; left: 0; width: 100%; 
+            padding: 15px 20px; background: white; 
+            box-shadow: 0 -10px 20px rgba(0,0,0,0.1); z-index: 550;
+            display: flex; justify-content: center;
+        }
+        .btn-flashy { 
+            background: var(--secundaria); color: var(--dark); 
+            width: 100%; max-width: 400px; padding: 20px; 
+            text-align: center; text-decoration: none; font-weight: 900; 
+            border-radius: 12px; text-transform: uppercase; font-size: 18px;
+            box-shadow: 0 4px 15px rgba(255, 223, 0, 0.4);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.03); } 100% { transform: scale(1); } }
+
+        /* NAVBAR INFERIOR */
+        .nav-bottom { position: fixed; bottom: 0; width: 100%; background: var(--primaria); display: grid; grid-template-columns: 1fr 1fr 1fr; padding: 12px 0; z-index: 1000; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; cursor: pointer; }
+        .nav-item svg { width: 22px; height: 22px; margin-bottom: 4px; fill: white; }
+        .nav-item span { font-size: 9px; font-weight: 900; text-transform: uppercase; }
+
+        /* MODAL CATEGORIAS */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; display: none; align-items: center; justify-content: center; }
+        .modal-content { background: white; width: 90%; max-width: 400px; padding: 30px; border-radius: 12px; }
+        .cat-btn { display: block; width: 100%; padding: 15px; margin-bottom: 10px; background: var(--primaria); color: white; border: none; font-weight: 900; border-radius: 6px; cursor: pointer; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+
+    <header onclick="resetHome()">
+        <div class="logo">VGS 3D</div>
+    </header>
+
+    <div class="search-box" id="searchBox">
+        <input type="text" id="searchInput" placeholder="O QUE VOCÊ PROCURA?" oninput="filtrarBusca()">
+    </div>
+
+    <!-- Tela Inicial (Vitrine Shopee) -->
+    <main id="homeView">
+        <div style="padding: 20px; text-align: center;">
+            <h2 style="font-weight: 900; font-size: 28px; letter-spacing: -1px;">OS MELHORES DROPS.</h2>
+        </div>
+        <div class="grid-container" id="gridProdutos"></div>
+    </main>
+
+    <!-- Página de Detalhes -->
+    <div id="detailPage">
+        <button class="back-btn" onclick="closeDetail()">← VOLTAR</button>
+        <div id="detailContentTarget"></div>
+    </div>
+
+    <!-- Modais -->
+    <div class="modal" id="modalCat">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 20px; text-align: center;">CATEGORIAS</h2>
+            <div id="catList"></div>
+            <p onclick="toggleModal()" style="text-align: center; margin-top: 20px; font-weight: 900; color: #999; cursor: pointer;">FECHAR</p>
+        </div>
+    </div>
+
+    <!-- Navegação Inferior -->
+    <nav class="nav-bottom">
+        <div class="nav-item" onclick="resetHome()">
+            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            <span>Início</span>
+        </div>
+        <div class="nav-item" onclick="toggleModal()">
+            <svg viewBox="0 0 24 24"><path d="M4 11h5V5H4v6zm0 7h5v-6H4v6zm7 0h5v-6h-5v6zm0-13v6h5V5h-5z"/></svg>
+            <span>Categorias</span>
+        </div>
+        <div class="nav-item" onclick="toggleSearch()">
+            <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            <span>Buscar</span>
+        </div>
+    </nav>
+
+    <script src="dados.js"></script>
+    <script>
+        // RENDERIZA A VITRINE (SHOPEE STYLE)
+        function renderVitrine(lista) {
+            const grid = document.getElementById('gridProdutos');
+            grid.innerHTML = "";
+            lista.forEach(p => {
+                grid.innerHTML += `
+                    <div class="product-thumb" onclick="openDetail(${p.id})">
+                        <img src="${p.foto}" alt="${p.nome}">
+                        <div class="info">
+                            <h3>${p.nome}</h3>
+                            <p class="price">R$ ${p.precoDesconto}</p>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // ABRE DETALHES DO PRODUTO
+        function openDetail(id) {
+            const p = PRODUTOS.find(item => item.id === id);
+            const target = document.getElementById('detailContentTarget');
+            const page = document.getElementById('detailPage');
+
+            target.innerHTML = `
+                <img src="${p.foto}" class="detail-img">
+                <div class="detail-content">
+                    <span style="color: #999; font-size: 11px; font-weight: 900; text-transform: uppercase;">${p.categoria}</span>
+                    <h1 class="detail-title">${p.nome}</h1>
+                    <p style="color:var(--primaria); font-weight:700; font-size: 13px;">${p.subtitulo}</p>
+                    
+                    <div class="detail-price-box">
+                        <span class="detail-price-old">R$ ${p.precoOriginal}</span>
+                        <span class="detail-price-new">R$ ${p.precoDesconto}</span>
+                    </div>
+
+                    <p style="line-height: 1.6; color: #444; margin-bottom: 25px;">${p.descricao}</p>
+                    
+                    <div style="margin-bottom: 30px;">
+                        <h4 style="font-weight:900; margin-bottom:10px;">POR QUE ESTA PEÇA?</h4>
+                        ${p.detalhes.map(d => `<p style="font-size:14px; margin-bottom:5px;">• ${d}</p>`).join('')}
+                    </div>
+
+                    <table class="specs-table">
+                        ${p.tabela.map(row => `<tr><td style="font-weight:900">${row[0]}</td><td style="text-align:right">${row[1]}</td></tr>`).join('')}
+                    </table>
+                </div>
+                <div class="buy-bar-fixed">
+                    <a href="${p.linkCompra}" target="_blank" class="btn-flashy">EU QUERO ESTE ITEM</a>
+                </div>
+            `;
+            
+            page.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Trava o scroll do fundo
+        }
+
+        function closeDetail() {
+            document.getElementById('detailPage').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function resetHome() {
+            closeDetail();
+            document.getElementById('searchBox').style.display = 'none';
+            renderVitrine(PRODUTOS);
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        function toggleSearch() {
+            const box = document.getElementById('searchBox');
+            if (box.style.display === 'block') {
+                box.style.display = 'none';
+                renderVitrine(PRODUTOS);
+            } else {
+                box.style.display = 'block';
+                box.querySelector('input').focus();
+            }
+        }
+
+        function filtrarBusca() {
+            const t = document.getElementById('searchInput').value.toLowerCase();
+            const res = PRODUTOS.filter(p => p.nome.toLowerCase().includes(t) || p.tags.some(tag => tag.includes(t)));
+            renderVitrine(res);
+        }
+
+        function toggleModal() {
+            const m = document.getElementById('modalCat');
+            m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
+            const categorias = [...new Set(PRODUTOS.map(p => p.categoria))];
+            const listDiv = document.getElementById('catList');
+            listDiv.innerHTML = "";
+            categorias.forEach(c => {
+                listDiv.innerHTML += `<button class="cat-btn" onclick="filtrarCat('${c}')">${c}</button>`;
+            });
+        }
+
+        function filtrarCat(cat) {
+            const res = PRODUTOS.filter(p => p.categoria === cat);
+            renderVitrine(res);
+            toggleModal();
+        }
+
+        window.onload = () => renderVitrine(PRODUTOS);
+    </script>
+</body>
+</html>
