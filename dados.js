@@ -27,18 +27,36 @@ const PRODUTOS = [
     ]
 },
     {
-        id: 2,
-        nome: "Suporte Headset VGS",
-        categoria: "Setup",
-        subtitulo: "Estética e utilidade.",
-        precoOriginal: "89,90",
-        precoDesconto: "55,00",
-        fotos: ["produto2_1.jpg"],
-        tags: ["setup", "gamer", "suporte"],
-        descricao: "Otimize seu setup com um design robusto e minimalista.",
-        detalhes: ["Material PLA+", "Pés antiderrapantes", "Design Exclusivo"],
-        tabela: [["Largura", "12cm"], ["Cores", "Grafite/Preto"]]
-    }
+    id: 2,
+    nome: "Chaveiro Bola Giratória Internacional",
+    categoria: "Chaveiros",
+    subtitulo: "A bola gira de verdade e leva o Inter com você.",
+    precoOriginal: "",
+    precoDesconto: "15,00",
+    fotos: [
+        "produto3_1.png",
+        "produto3_2.png"
+    ],
+    tags: [
+        "Chaveiro",
+        "Internacional",
+        "Bola",
+        "Giratório"
+    ],
+    descricao: "Chaveiro em formato de bola de futebol com o escudo do Internacional. A bola gira livremente, possui excelente acabamento e é ideal para chaves, mochilas e coleções.",
+    detalhes: [
+        "Bola giratória",
+        "Material resistente",
+        "Leve e compacto",
+        "Excelente acabamento"
+    ],
+    tabela: [
+        ["Material", "Plástico"],
+        ["Cor", "Vermelho e Branco"],
+        ["Time", "Internacional"],
+        ["Peso", "40g"]
+    ]
+}
 ];
 
 function gerarLinkZap(nomeProduto) {
