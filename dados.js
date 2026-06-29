@@ -27,15 +27,15 @@ const PRODUTOS = [
     ]
 },
     {
-    id: 2,
+    id: 3,
     nome: "Chaveiro Bola Giratória Internacional",
     categoria: "Chaveiros",
     subtitulo: "A bola gira de verdade e leva o Inter com você.",
     precoOriginal: "",
     precoDesconto: "15,00",
     fotos: [
-        "produto3_1.png",
-        "produto3_2.png"
+        "p2_1.png",
+        "p2_2.png"
     ],
     tags: [
         "Chaveiro",
@@ -48,7 +48,8 @@ const PRODUTOS = [
         "Bola giratória",
         "Material resistente",
         "Leve e compacto",
-        "Excelente acabamento"
+        "Excelente acabamento",
+        "Ideal para colecionadores"
     ],
     tabela: [
         ["Material", "Plástico"],
