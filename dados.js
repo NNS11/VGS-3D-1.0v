@@ -6,28 +6,28 @@ const CONFIG = {
 
 const PRODUTOS = [
     {
-    "id": 1,
-    "nome": "Action figure Walter White (Heisenberg) Breaking Bad",
-    "categoria": "Séries",
-    "subtitulo": "Tenha um boneco da maior série de todos os tempos!!",
-    "precoOriginal": "",
-    "precoDesconto": "100,00",
-    "fotos": [
+    id: 1,
+    nome: "Action figure Walter White (Heisenberg) Breaking Bad",
+    categoria: "Séries",
+    subtitulo: "Tenha um boneco da maior série de todos os tempos!!",
+    precoOriginal: "",
+    precoDesconto: "100,00",
+    fotos: [
         "p1_1.png",
         "p1_2.png"
     ],
-    "tags": [
+    tags: [
         "Séries",
         "Breaking Bad",
         "Action figure"
     ],
-    "descricao": "Boneco do Walter White (Heisenberg), da série Breaking Bad em ótimo qualidade e acabamento.",
-    "detalhes": [
+    descricao: "Boneco do Walter White (Heisenberg), da série Breaking Bad em ótimo qualidade e acabamento.",
+    detalhes: [
         "Boneco colecionável",
         "Muito resistente",
         "Ótimo acabamento"
     ],
-    "tabela": [
+    tabela: [
         [
             "Altura",
             "20cm"
