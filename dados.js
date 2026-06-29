@@ -10,7 +10,7 @@ const PRODUTOS = [
     nome: "Action Figure Walter White (Heisenberg) Breaking Bad",
     categoria: "Séries",
     subtitulo: "Tenha um boneco da maior série de todos os tempos!!",
-    precoOriginal: "",
+    precoOriginal: "125,00",
     precoDesconto: "100,00",
     fotos: ["p1_1.png", "p1_2.png"],
     tags: ["Séries", "Breaking Bad", "Action Figure"],
