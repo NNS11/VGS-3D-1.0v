@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGS 3D | Produto</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --primaria: #1a1a1a; --destaque: #f7e017; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: white; padding-bottom: 150px; overflow-x: hidden; }
+        .carousel { display: flex; overflow-x: scroll; scroll-snap-type: x mandatory; scrollbar-width: none; }
+        .carousel::-webkit-scrollbar { display: none; }
+        .carousel img { width: 100vw; aspect-ratio: 1/1; object-fit: cover; scroll-snap-align: start; flex-shrink: 0; }
+        .back-btn { position: fixed; top: 20px; left: 20px; background: rgba(0,0,0,0.8); color: white; border: none; padding: 10px 18px; border-radius: 50px; font-weight: 900; z-index: 100; text-decoration: none; font-size: 12px; backdrop-filter: blur(5px); }
+        .content { padding: 25px; max-width: 600px; margin: 0 auto; animation: fadeInUp 0.8s ease; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .title { font-size: 32px; font-weight: 900; text-transform: uppercase; margin: 10px 0; letter-spacing: -2px; }
+        .price { font-size: 36px; font-weight: 900; color: var(--primaria); margin: 15px 0; }
+        .specs { width: 100%; border-collapse: collapse; background: var(--primaria); color: var(--destaque); font-size: 12px; margin-top: 30px; border-radius: 8px; overflow: hidden; }
+        .specs td { padding: 15px; border: 1px solid rgba(255,255,255,0.05); }
+        .fixed-buy { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(255,255,255,0.9); padding: 20px; backdrop-filter: blur(10px); z-index: 500; border-top: 1px solid #eee; }
+        .btn-zap { display: block; background: var(--destaque); color: #000; padding: 22px; text-align: center; text-decoration: none; font-weight: 900; border-radius: 16px; font-size: 18px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.04); } }
+        .indicator { text-align: center; padding: 10px; font-size: 10px; font-weight: 900; color: #999; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-btn">← VOLTAR</a>
+    <div id="target"></div>
+    <script src="dados.js"></script>
+    <script>
+        const id = new URLSearchParams(window.location.search).get('id');
+        const p = PRODUTOS.find(i => i.id == id);
+        if(!p) window.location.href = 'index.html';
+        document.getElementById('target').innerHTML = `
+            <div class="carousel">${p.fotos.map(img => `<img src="${img}">`).join('')}</div>
+            <div class="indicator">Deslize para ver mais fotos ➔</div>
+            <div class="content">
+                <span style="background:#eee; padding:4px 10px; font-size:10px; font-weight:900; border-radius:4px; text-transform:uppercase;">${p.categoria}</span>
+                <h1 class="title">${p.nome}</h1>
+                <div class="price">R$ ${p.precoDesconto}</div>
+                <p style="line-height:1.6; color:#444; font-size:15px">${p.descricao}</p>
+                <div style="margin-top:30px">
+                    <h4 style="font-weight:900; border-bottom:2px solid var(--destaque); display:inline-block; margin-bottom:10px">DETALHES</h4>
+                    ${p.detalhes.map(d => `<p style="font-size:14px; margin-top:8px; font-weight:700">• ${d}</p>`).join('')}
+                </div>
+                <table class="specs">${p.tabela.map(r => `<tr><td style="font-weight:900; text-transform:uppercase">${r[0]}</td><td style="text-align:right">${r[1]}</td></tr>`).join('')}</table>
+            </div>
+            <div class="fixed-buy"><a href="${gerarLinkZap(p.nome)}" target="_blank" class="btn-zap">ADQUIRIR AGORA</a></div>
+        `;
+    </script>
+</body>
+</html>
