@@ -27,7 +27,7 @@ const PRODUTOS = [
     ]
 },
     {
-    id: 3,
+    id: 2,
     nome: "Chaveiro Bola Giratória Internacional",
     categoria: "Chaveiros",
     subtitulo: "A bola gira de verdade e leva o Inter com você.",
