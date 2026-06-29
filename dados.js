@@ -6,18 +6,42 @@ const CONFIG = {
 
 const PRODUTOS = [
     {
-        id: 1,
-        nome: "Action Figure Batman 8K",
-        categoria: "Colecionáveis",
-        subtitulo: "A precisão que sua estante merece.",
-        precoOriginal: "250,00",
-        precoDesconto: "189,90",
-        fotos: ["produto1_1.jpg", "produto1_2.jpg"], // Adicione os nomes das fotos aqui
-        tags: ["heroi", "dc", "batman", "resina"],
-        descricao: "Edição limitada produzida em resina ultra-fina. Cada detalhe foi pensado para colecionadores de elite.",
-        detalhes: ["Resina PRO 8K", "Pintura Manual", "Base temática"],
-        tabela: [["Altura", "22cm"], ["Material", "Resina"], ["Escala", "1/10"]]
-    },
+    "id": 1,
+    "nome": "Action figure Walter White (Heisenberg) Breaking Bad",
+    "categoria": "Séries",
+    "subtitulo": "Tenha um boneco da maior série de todos os tempos!!",
+    "precoOriginal": "",
+    "precoDesconto": "100,00",
+    "fotos": [
+        "p1_1.png",
+        "p1_2.png"
+    ],
+    "tags": [
+        "Séries",
+        "Breaking Bad",
+        "Action figure"
+    ],
+    "descricao": "Boneco do Walter White (Heisenberg), da série Breaking Bad em ótimo qualidade e acabamento.",
+    "detalhes": [
+        "Boneco colecionável",
+        "Muito resistente",
+        "Ótimo acabamento"
+    ],
+    "tabela": [
+        [
+            "Altura",
+            "20cm"
+        ],
+        [
+            "Peso",
+            "250g"
+        ],
+        [
+            "Colorido",
+            "Sim"
+        ]
+    ]
+}
     {
         id: 2,
         nome: "Suporte Headset VGS",
