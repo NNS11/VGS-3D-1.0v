@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGS 3D | Categorias</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --primaria: #1a1a1a; --destaque: #f7e017; --bg: #f4f4f4; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: var(--bg); padding-bottom: 90px; }
+        header { background: var(--primaria); padding: 30px; color: white; text-align: center; font-weight: 900; letter-spacing: -1px; font-size: 20px; }
+        .chips { display: flex; gap: 10px; overflow-x: auto; padding: 20px; background: white; border-bottom: 1px solid #ddd; scrollbar-width: none; }
+        .btn-cat { background: #eee; color: #111; border: none; padding: 12px 25px; border-radius: 50px; font-weight: 900; text-transform: uppercase; font-size: 11px; cursor: pointer; transition: 0.3s; }
+        .btn-cat.active { background: var(--primaria); color: white; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 15px; }
+        .card { background: white; border-radius: 12px; overflow: hidden; text-decoration: none; color: inherit; border: 1px solid #eee; }
+        .card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; }
+        .nav-bottom { position: fixed; bottom: 0; width: 100%; background: var(--primaria); display: grid; grid-template-columns: 1fr 1fr 1fr; padding: 15px 0; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: white; text-decoration: none; }
+        .nav-item svg { width: 22px; height: 22px; margin-bottom: 4px; fill: white; }
+    </style>
+</head>
+<body>
+    <header>COLEÇÕES VGS 3D</header>
+    <div class="chips" id="chips"></div>
+    <div class="grid" id="vitrine"></div>
+    
+    <nav class="nav-bottom">
+        <a href="index.html" class="nav-item"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>Home</span></a>
+        <a href="categorias.html" class="nav-item"><svg viewBox="0 0 24 24"><path d="M4 11h5V5H4v6zm0 7h5v-6H4v6zm7 0h5v-6h-5v6zm0-13v6h5V5h-5z"/></svg><span>Cats</span></a>
+        <a href="busca.html" class="nav-item"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg><span>Busca</span></a>
+    </nav>
+
+    <script src="dados.js"></script>
+    <script>
+        const cats = [...new Set(PRODUTOS.map(p => p.categoria))];
+        document.getElementById('chips').innerHTML = cats.map(c => `<button class="btn-cat" onclick="filtrar('${c}', this)">${c}</button>`).join('');
+        
+        function filtrar(c, el) {
+            document.querySelectorAll('.btn-cat').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            const filtered = PRODUTOS.filter(p => p.categoria === c);
+            document.getElementById('vitrine').innerHTML = filtered.map(p => `
+                <a href="produto.html?id=${p.id}" class="card"><img src="${p.fotos[0]}"><div class="info" style="padding:10px"><h3 style="font-size:12px; font-weight:900">${p.nome}</h3><p style="font-weight:900">R$ ${p.precoDesconto}</p></div></a>
+            `).join('');
+        }
+        window.onload = () => document.querySelector('.btn-cat').click();
+    </script>
+</body>
+</html>
