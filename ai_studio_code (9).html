@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGS 3D | Buscar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --primaria: #333; --destaque: #FFDF00; --bg: #f4f4f4; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: var(--bg); padding-bottom: 80px; }
+        .search-container { background: var(--primaria); padding: 30px 20px; }
+        input { width: 100%; padding: 15px; border: none; border-radius: 8px; font-size: 16px; outline: none; font-weight: 700; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; max-width: 600px; margin: 0 auto; }
+        .card { background: white; border-radius: 8px; overflow: hidden; text-decoration: none; color: inherit; }
+        .card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; }
+        .card .info { padding: 8px; }
+        .nav-bottom { position: fixed; bottom: 0; width: 100%; background: var(--primaria); display: grid; grid-template-columns: 1fr 1fr 1fr; padding: 12px 0; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: white; text-decoration: none; }
+        .nav-item svg { width: 22px; height: 22px; margin-bottom: 4px; fill: white; }
+    </style>
+</head>
+<body>
+    <div class="search-container"><input type="text" id="buscador" placeholder="O QUE VOCÊ BUSCA?" oninput="buscar()"></div>
+    <div class="grid" id="resultado"></div>
+    <nav class="nav-bottom">
+        <a href="index.html" class="nav-item"> <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg> </a>
+        <a href="categorias.html" class="nav-item"> <svg viewBox="0 0 24 24"><path d="M4 11h5V5H4v6zm0 7h5v-6H4v6zm7 0h5v-6h-5v6zm0-13v6h5V5h-5z"/></svg> </a>
+        <a href="busca.html" class="nav-item"> <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg> </a>
+    </nav>
+    <script src="dados.js"></script>
+    <script>
+        function buscar() {
+            const termo = document.getElementById('buscador').value.toLowerCase();
+            const res = PRODUTOS.filter(p => p.nome.toLowerCase().includes(termo) || p.categoria.toLowerCase().includes(termo));
+            document.getElementById('resultado').innerHTML = res.map(p => `
+                <a href="produto.html?id=${p.id}" class="card"><img src="${p.foto}"><div class="info"><h3 style="font-size:12px">${p.nome}</h3><p style="font-weight:900">R$ ${p.precoDesconto}</p></div></a>
+            `).join('');
+        }
+        window.onload = buscar;
+    </script>
+</body>
+</html>
