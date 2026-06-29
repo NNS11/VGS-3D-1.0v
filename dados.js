@@ -7,41 +7,25 @@ const CONFIG = {
 const PRODUTOS = [
     {
     id: 1,
-    nome: "Action figure Walter White (Heisenberg) Breaking Bad",
+    nome: "Action Figure Walter White (Heisenberg) Breaking Bad",
     categoria: "Séries",
     subtitulo: "Tenha um boneco da maior série de todos os tempos!!",
     precoOriginal: "",
     precoDesconto: "100,00",
-    fotos: [
-        "p1_1.png",
-        "p1_2.png"
-    ],
-    tags: [
-        "Séries",
-        "Breaking Bad",
-        "Action figure"
-    ],
-    descricao: "Boneco do Walter White (Heisenberg), da série Breaking Bad em ótimo qualidade e acabamento.",
+    fotos: ["p1_1.png", "p1_2.png"],
+    tags: ["Séries", "Breaking Bad", "Action Figure"],
+    descricao: "Boneco do Walter White (Heisenberg), da série Breaking Bad em ótima qualidade e acabamento.",
     detalhes: [
         "Boneco colecionável",
         "Muito resistente",
         "Ótimo acabamento"
     ],
     tabela: [
-        [
-            "Altura",
-            "20cm"
-        ],
-        [
-            "Peso",
-            "250g"
-        ],
-        [
-            "Colorido",
-            "Sim"
-        ]
+        ["Altura", "20cm"],
+        ["Peso", "250g"],
+        ["Colorido", "Sim"]
     ]
-};
+},
     {
         id: 2,
         nome: "Suporte Headset VGS",
